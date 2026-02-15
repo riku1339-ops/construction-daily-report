@@ -1,11 +1,12 @@
 import streamlit as st
 from zoneinfo import ZoneInfo
-JST = ZoneInfo("Asia/Tokyo")
-date = st.date_input("日付", value=datetime.now(JST).date())
 from datetime import datetime
 from io import BytesIO
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+import re
+
+JST = ZoneInfo("Asia/Tokyo")
 
 st.set_page_config(page_title="施工管理 日報", layout="centered")
 
@@ -15,7 +16,7 @@ st.title("📋 施工管理 日報（Streamlit）")
 with st.form("daily_report"):
     col1, col2 = st.columns(2)
     with col1:
-        date = st.date_input("日付", value=datetime.today())
+        date = st.date_input("日付", value=datetime.now(JST).date())
         site = st.text_input("現場名")
         weather = st.text_input("天候（例：晴れ/曇り/雨）")
     with col2:

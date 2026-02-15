@@ -11,7 +11,7 @@ from googleapiclient.http import MediaIoBaseUpload
 
 
 # ====== 設定（ここだけ自分の値に）======
-FOLDER_ID = "11PdW0kAKQjqvxEiDsGQGSMP_xQQVndYw"  # 共有したいDriveフォルダID
+FOLDER_ID = "156dbSWcfyI15VHQwhoFc-RZJcvBanjb-"  # 共有したいDriveフォルダID
 DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file"
 
 

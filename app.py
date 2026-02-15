@@ -62,7 +62,8 @@ def make_pdf(data: dict) -> BytesIO:
 
     for line in lines:
         # 改行が多い文章を安全に分割
-        for sub in str(line).split("
+        for sub in str(line).split("\n"):
+
 "):
             if y < 60:
                 c.showPage()

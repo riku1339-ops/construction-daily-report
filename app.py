@@ -78,9 +78,7 @@ def make_pdf(data: dict) -> BytesIO:
     c.save()
     buf.seek(0)
     return buf
-
 if submitted:
-    if submitted:
     data = {
         "date": date.strftime("%Y-%m-%d"),
         "site": site,
@@ -93,58 +91,15 @@ if submitted:
         "tomorrow": tomorrow,
     }
 
+    # PDF生成
     pdf_buffer = make_pdf(data)
 
-   def make_pdf(data: dict):
-    from io import BytesIO
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.pagesizes import A4
+    # ダウンロードボタン表示
+    st.download_button(
+        label="PDFをダウンロード",
+        data=pdf_buffer,
+        file_name=f"施工管理日報_{data['date']}.pdf",
+        mime="application/pdf",
+    )
 
-    buf = BytesIO()
-    c = canvas.Canvas(buf, pagesize=A4)
-    width, height = A4
-    c.setFont("Helvetica", 10)
-
-    y = height - 50
-
-    lines = [
-        f"【日付】{data['date']}",
-        f"【現場】{data['site']}",
-        f"【天気】{data['weather']}",
-        f"【責任者】{data['manager']}",
-        f"【作業員】{data['workers']}",
-        "",
-        "【安全確認】",
-        data["safety"],
-        "",
-        "【作業内容】",
-        data["work"],
-        "",
-        "【指摘・是正・課題】",
-        data["issues"],
-        "",
-        "【明日の予定】",
-        data["tomorrow"],
-    ]
-
-    for line in lines:
-        # 改行が多い文章を安全に分割
-        for sub in str(line).split("\n"):
-            if y < 60:
-                c.showPage()
-                c.setFont("Helvetica", 10)
-                y = height - 50
-
-            c.drawString(40, y, sub[:110])  # ざっくり幅制限
-            y -= 14
-
-        y -= 6
-
-    c.save()
-    buf.seek(0)
-    return buf
-
-# ↑ ここまでが make_pdf()
-
-if submitted:
-    ...
+    st.success("PDFが正常に生成されました！")

@@ -79,54 +79,57 @@ def make_pdf(data: dict) -> BytesIO:
     buf.seek(0)
     return buf
 
-    if submitted:
-    data = {
-    "date": date.strftime("%Y-%m-%d"),
-    "site": site,
-    "weather": weather,
-    "manager": manager,
-    "workers": workers,
-    "safety": safety,
-    "work": work,
-    "issues": issues,
-    "tomorrow": tomorrow,
-    }
-    pdf_buffer = make_pdf(data)
-    # ---- Driveへ保存 ----
-    import google.auth
-    from googleapiclient.discovery import build
-    from googleapiclient.http import MediaIoBaseUpload
-    
-    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
-    
-    credentials, project = google.auth.default(
-    scopes=["https://www.googleapis.com/auth/drive.file"]
-    )
-    
-    drive_service = build("drive", "v3", credentials=credentials)
-    
-    file_metadata = {
-    "name": f"日報_{data['date']}.pdf",
-    "parents": [FOLDER_ID]
-    }
-    
-    pdf_buffer.seek(0)
-    
-    media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
-    
-    drive_service.files().create(
-    body=file_metadata,
-    media_body=media,
-    fields="id"
-    ).execute()
-    
-    st.success("Driveに保存しました！")
-    
-    st.download_button(
-    label="PDFをダウンロード",
-    data=pdf_buffer,
-    file_name=f"日報_{data['date']}.pdf",
-    mime="application/pdf",
-    )
-    
-    st.success("PDFが生成されました！")
+if submitted:
+   def make_pdf(data: dict):
+    from io import BytesIO
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import A4
+
+    buf = BytesIO()
+    c = canvas.Canvas(buf, pagesize=A4)
+    width, height = A4
+    c.setFont("Helvetica", 10)
+
+    y = height - 50
+
+    lines = [
+        f"【日付】{data['date']}",
+        f"【現場】{data['site']}",
+        f"【天気】{data['weather']}",
+        f"【責任者】{data['manager']}",
+        f"【作業員】{data['workers']}",
+        "",
+        "【安全確認】",
+        data["safety"],
+        "",
+        "【作業内容】",
+        data["work"],
+        "",
+        "【指摘・是正・課題】",
+        data["issues"],
+        "",
+        "【明日の予定】",
+        data["tomorrow"],
+    ]
+
+    for line in lines:
+        # 改行が多い文章を安全に分割
+        for sub in str(line).split("\n"):
+            if y < 60:
+                c.showPage()
+                c.setFont("Helvetica", 10)
+                y = height - 50
+
+            c.drawString(40, y, sub[:110])  # ざっくり幅制限
+            y -= 14
+
+        y -= 6
+
+    c.save()
+    buf.seek(0)
+    return buf
+
+# ↑ ここまでが make_pdf()
+
+if submitted:
+    ...

@@ -93,40 +93,40 @@ if submitted:
     }
     pdf_buffer = make_pdf(data)
     # ---- Driveへ保存 ----
-    import google.auth
-    from googleapiclient.discovery import build
-    from googleapiclient.http import MediaIoBaseUpload
+        import google.auth
+        from googleapiclient.discovery import build
+        from googleapiclient.http import MediaIoBaseUpload
+        
+        FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
     
-    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
-
-    credentials, project = google.auth.default(
-        scopes=["https://www.googleapis.com/auth/drive.file"]
-    )
-
-    drive_service = build("drive", "v3", credentials=credentials)
-
-    file_metadata = {
-        "name": f"日報_{data['date']}.pdf",
-        "parents": [FOLDER_ID]
-    }
-
-    pdf_buffer.seek(0)
-
-    media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
-
-    drive_service.files().create(
-        body=file_metadata,
-        media_body=media,
-        fields="id"
-    ).execute()
-
-    st.success("Driveに保存しました！")
-
-    st.download_button(
-        label="PDFをダウンロード",
-        data=pdf_buffer,
-        file_name=f"日報_{data['date']}.pdf",
-        mime="application/pdf",
-    )
-
-    st.success("PDFが生成されました！")
+        credentials, project = google.auth.default(
+            scopes=["https://www.googleapis.com/auth/drive.file"]
+        )
+    
+        drive_service = build("drive", "v3", credentials=credentials)
+    
+        file_metadata = {
+            "name": f"日報_{data['date']}.pdf",
+            "parents": [FOLDER_ID]
+        }
+    
+        pdf_buffer.seek(0)
+    
+        media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
+    
+        drive_service.files().create(
+            body=file_metadata,
+            media_body=media,
+            fields="id"
+        ).execute()
+    
+        st.success("Driveに保存しました！")
+    
+        st.download_button(
+            label="PDFをダウンロード",
+            data=pdf_buffer,
+            file_name=f"日報_{data['date']}.pdf",
+            mime="application/pdf",
+        )
+    
+        st.success("PDFが生成されました！")

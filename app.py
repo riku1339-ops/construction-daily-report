@@ -111,6 +111,8 @@ if submitted:
         "name": f"日報_{data['date']}.pdf",
         "parents": [FOLDER_ID]
     }
+    
+    pdf_buffer.seek(0)
 
     media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
 

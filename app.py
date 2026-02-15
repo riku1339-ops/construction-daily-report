@@ -98,7 +98,7 @@ if submitted:
     from googleapiclient.http import MediaIoBaseUpload
 
     SERVICE_ACCOUNT_FILE = "service-account.json"
-    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw?lfhs=2"
+    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
 
     credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE,

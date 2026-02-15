@@ -80,6 +80,21 @@ def make_pdf(data: dict) -> BytesIO:
     return buf
 
 if submitted:
+    if submitted:
+    data = {
+        "date": date.strftime("%Y-%m-%d"),
+        "site": site,
+        "weather": weather,
+        "manager": manager,
+        "workers": workers,
+        "safety": safety,
+        "work": work,
+        "issues": issues,
+        "tomorrow": tomorrow,
+    }
+
+    pdf_buffer = make_pdf(data)
+
    def make_pdf(data: dict):
     from io import BytesIO
     from reportlab.pdfgen import canvas

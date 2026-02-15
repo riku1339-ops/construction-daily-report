@@ -92,7 +92,7 @@ if submitted:
         "tomorrow": tomorrow,
     }
     pdf_buffer = make_pdf(data)
-        # ---- Driveへ保存 ----
+    # ---- Driveへ保存 ----
     import google.auth
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseUpload
@@ -121,3 +121,12 @@ if submitted:
     ).execute()
 
     st.success("Driveに保存しました！")
+
+    st.download_button(
+        label="PDFをダウンロード",
+        data=pdf_buffer,
+        file_name=f"日報_{data['date']}.pdf",
+        mime="application/pdf",
+    )
+
+    st.success("PDFが生成されました！")

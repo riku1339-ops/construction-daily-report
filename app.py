@@ -1,6 +1,7 @@
 import streamlit as st
 from zoneinfo import ZoneInfo
 JST = ZoneInfo("Asia/Tokyo")
+date = st.date_input("日付", value=datetime.now(JST).date())
 from datetime import datetime
 from io import BytesIO
 from reportlab.lib.pagesizes import A4

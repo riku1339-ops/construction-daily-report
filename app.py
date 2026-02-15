@@ -95,13 +95,14 @@ if submitted:
         # ---- Driveへ保存 ----
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseUpload
-
-    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
     import google.auth
+    
+    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
 
-credentials, project = google.auth.default(
+    credentials, project = google.auth.default(
     scopes=["https://www.googleapis.com/auth/drive.file"]
-)
+    )
+    
 drive_service = build("drive", "v3", credentials=credentials)
 
     file_metadata = {

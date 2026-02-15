@@ -93,17 +93,15 @@ if submitted:
     }
     pdf_buffer = make_pdf(data)
         # ---- Driveへ保存 ----
-    from google.oauth2 import service_account
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseUpload
 
-    SERVICE_ACCOUNT_FILE = "service-account.json"
     FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
+    import google.auth
 
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE,
-        scopes=["https://www.googleapis.com/auth/drive.file"]
-    )
+credentials, project = google.auth.default(
+    scopes=["https://www.googleapis.com/auth/drive.file"]
+)
 
     drive_service = build("drive", "v3", credentials=credentials)
 

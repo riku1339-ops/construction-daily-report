@@ -103,3 +103,36 @@ if submitted:
     )
 
     st.success("PDFが正常に生成されました！")
+    # -------------------------
+    # Google Driveへ保存
+    # -------------------------
+    import google.auth
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaIoBaseUpload
+
+    FOLDER_ID = "あなたのフォルダIDをここに"  # 例: 11PdW0kAKQjqvxEiDsGQGSMP_xQQVndYw
+
+    # Cloud Run / GCP ならこれでOK（サービスアカウントの権限で動く）
+    credentials, project = google.auth.default(
+        scopes=["https://www.googleapis.com/auth/drive.file"]
+    )
+
+    drive_service = build("drive", "v3", credentials=credentials)
+
+    # 念のため先頭に戻す
+    pdf_buffer.seek(0)
+
+    file_metadata = {
+        "name": f"施工管理日報_{data['date']}.pdf",
+        "parents": [FOLDER_ID],
+    }
+
+    media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf", resumable=True)
+
+    uploaded = drive_service.files().create(
+        body=file_metadata,
+        media_body=media,
+        fields="id, webViewLink",
+    ).execute()
+
+    st.success(f"Driveに保存しました！ fileId={uploaded['id']}")

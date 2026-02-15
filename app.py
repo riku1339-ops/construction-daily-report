@@ -79,54 +79,54 @@ def make_pdf(data: dict) -> BytesIO:
     buf.seek(0)
     return buf
 
-if submitted:
+    if submitted:
     data = {
-        "date": date.strftime("%Y-%m-%d"),
-        "site": site,
-        "weather": weather,
-        "manager": manager,
-        "workers": workers,
-        "safety": safety,
-        "work": work,
-        "issues": issues,
-        "tomorrow": tomorrow,
+    "date": date.strftime("%Y-%m-%d"),
+    "site": site,
+    "weather": weather,
+    "manager": manager,
+    "workers": workers,
+    "safety": safety,
+    "work": work,
+    "issues": issues,
+    "tomorrow": tomorrow,
     }
     pdf_buffer = make_pdf(data)
     # ---- Driveへ保存 ----
-        import google.auth
-        from googleapiclient.discovery import build
-        from googleapiclient.http import MediaIoBaseUpload
-        
-        FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
+    import google.auth
+    from googleapiclient.discovery import build
+    from googleapiclient.http import MediaIoBaseUpload
     
-        credentials, project = google.auth.default(
-            scopes=["https://www.googleapis.com/auth/drive.file"]
-        )
+    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
     
-        drive_service = build("drive", "v3", credentials=credentials)
+    credentials, project = google.auth.default(
+    scopes=["https://www.googleapis.com/auth/drive.file"]
+    )
     
-        file_metadata = {
-            "name": f"日報_{data['date']}.pdf",
-            "parents": [FOLDER_ID]
-        }
+    drive_service = build("drive", "v3", credentials=credentials)
     
-        pdf_buffer.seek(0)
+    file_metadata = {
+    "name": f"日報_{data['date']}.pdf",
+    "parents": [FOLDER_ID]
+    }
     
-        media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
+    pdf_buffer.seek(0)
     
-        drive_service.files().create(
-            body=file_metadata,
-            media_body=media,
-            fields="id"
-        ).execute()
+    media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
     
-        st.success("Driveに保存しました！")
+    drive_service.files().create(
+    body=file_metadata,
+    media_body=media,
+    fields="id"
+    ).execute()
     
-        st.download_button(
-            label="PDFをダウンロード",
-            data=pdf_buffer,
-            file_name=f"日報_{data['date']}.pdf",
-            mime="application/pdf",
-        )
+    st.success("Driveに保存しました！")
     
-        st.success("PDFが生成されました！")
+    st.download_button(
+    label="PDFをダウンロード",
+    data=pdf_buffer,
+    file_name=f"日報_{data['date']}.pdf",
+    mime="application/pdf",
+    )
+    
+    st.success("PDFが生成されました！")

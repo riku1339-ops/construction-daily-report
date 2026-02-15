@@ -110,7 +110,7 @@ if submitted:
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseUpload
 
-    FOLDER_ID = "あなたのフォルダIDをここに"  # 例: 11PdW0kAKQjqvxEiDsGQGSMP_xQQVndYw
+    FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"  
 
     # Cloud Run / GCP ならこれでOK（サービスアカウントの権限で動く）
     credentials, project = google.auth.default(

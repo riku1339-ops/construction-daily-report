@@ -102,8 +102,7 @@ if submitted:
 credentials, project = google.auth.default(
     scopes=["https://www.googleapis.com/auth/drive.file"]
 )
-
-    drive_service = build("drive", "v3", credentials=credentials)
+drive_service = build("drive", "v3", credentials=credentials)
 
     file_metadata = {
         "name": f"日報_{data['date']}.pdf",

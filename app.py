@@ -82,6 +82,7 @@ def upload_pdf_to_drive(pdf_buffer: BytesIO, filename: str) -> dict:
             body=file_metadata,
             media_body=media,
             fields="id, webViewLink",
+            supportsAllDrives=True
         )
         .execute()
     )

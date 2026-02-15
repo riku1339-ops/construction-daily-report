@@ -93,9 +93,9 @@ if submitted:
     }
     pdf_buffer = make_pdf(data)
         # ---- Driveへ保存 ----
+    import google.auth
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseUpload
-    import google.auth
     
     FOLDER_ID = "11PdWOkAKQjqvxEiDsGQGSMP_xQQVndYw"
 
@@ -105,20 +105,20 @@ if submitted:
     
 drive_service = build("drive", "v3", credentials=credentials)
 
-    file_metadata = {
+file_metadata = {
         "name": f"日報_{data['date']}.pdf",
         "parents": [FOLDER_ID]
-    }
+}
     
-    pdf_buffer.seek(0)
+pdf_buffer.seek(0)
 
-    media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
+media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf")
 
-    drive_service.files().create(
+drive_service.files().create(
         body=file_metadata,
         media_body=media,
         fields="id"
-    ).execute()
+).execute()
 
     st.success("Driveに保存しました！")
 

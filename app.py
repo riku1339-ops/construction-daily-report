@@ -71,8 +71,7 @@ def upload_pdf_to_drive(pdf_buffer: BytesIO, filename: str) -> dict:
     pdf_buffer.seek(0)
 
     file_metadata = {
-        "name": filename,
-        "parents": [FOLDER_ID],
+        "name": filename
     }
 
     media = MediaIoBaseUpload(pdf_buffer, mimetype="application/pdf", resumable=True)
